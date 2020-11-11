@@ -3,7 +3,7 @@
 
 import flask as flk
 import sys
-import os
+import subprocess as sb
 
 
 serveur = flk.Flask(__name__)
@@ -17,22 +17,28 @@ def index():
     return "Bienvenue sur ce serveur Flask local avec lequel vous pouvez communiquer\
  pour faire des simulations du problème à n corps"
 
-@serveur.route('/simulationFichier/<pathFile>')
+@serveur.route('/paramInit/<int:nbObj>/<int:mMin>/<int:mMax>')
 
-def simulationFichier(pathFile):
+def paramInit(nbObj, mMin, mMax):
     """
-    Cette fonction reçoit le nom de fichier de données initiales et execute le code python de simulation dessus 
+    Cette fonction reçoit les paramètres pour la génération de conditions initiales
     """
-    if isfile(pathFile):
-        message = "Nom du fichier bien pris execution de la simulation"
+    bashCommand = './Gene_CI.py {} {} {}'.format(nbObj, mMin, mMax)
+    process = sb.Popen(bashCommand.split(), stdout = sb.PIPE)
+    output, error = process.communicate()
+    if error == None:
+        return "Commande executée sans problème"
     else:
-        message = "Vous devez donner un nom de fichier"
-    return message
+        return "Erreur dans l'execution interne, \nLog d'erreur : " + str(error)
+    
 
 @serveur.route('/retourDonnees/<result>')
 
 def retourDonnees(result):
-    return flk.send_file(result)
+    try:
+        return flk.send_file(result)
+    except FileNotFoundError:
+        return "Fichier non existant"
 
 
 serveur.run()
