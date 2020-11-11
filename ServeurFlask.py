@@ -17,7 +17,7 @@ def index():
     return "Bienvenue sur ce serveur Flask local avec lequel vous pouvez communiquer\
  pour faire des simulations du problème à n corps"
 
-@serveur.route('/simulationFichier/<param1>')
+@serveur.route('/simulationFichier/<pathFile>')
 
 def simulationFichier(pathFile):
     """
@@ -29,7 +29,7 @@ def simulationFichier(pathFile):
         message = "Vous devez donner un nom de fichier"
     return message
 
-@serveur.route('/retourDonnees/<param1>')
+@serveur.route('/retourDonnees/<result>')
 
 def retourDonnees(result):
     return flk.send_file(result)
