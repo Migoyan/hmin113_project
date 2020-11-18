@@ -18,6 +18,25 @@ Obj=[]
 Obj+=[[[1000],[0],[0],[10],1]]
 Obj+=[[[0],[0],[0],[0],10000]]
 
+def data_init(fileName):
+    """
+    Charge la liste des objets générés par le fichier Gene_CI.py ou envoyé par l'utilisateur
+    Retourne une liste de type
+    [[[x01], [y01], [vx01], [vy01], m1], [[x02], [y02], [vx02], [vy02], m2], ...]
+    """
+    corps = []
+    f = open(fileName, 'r')
+    for line in f:
+        tempLine = line.rstrip(', \n')
+        splittedLine = tempLine.split(", ")
+        corps += [[float(i) for i in splittedLine]]
+    for i in corps:
+        i[0] = [i[0]]
+        i[1] = [i[1]]
+        i[2] = [i[2]]
+        i[3] = [i[3]]
+    return corps
+
 #calcul des accélérations
 def a_x(x1,y1,x2,y2,m1,m2):
 	if (x1-x2)!=0:
