@@ -48,6 +48,20 @@ def upload_CI_file():
     f.save("CI.dat")
     return "fichier uploadé"
 
+@serveur.route('/simulation/<N>/<Tmax>')
+
+def simu(N, Tmax):
+    """
+    Lance la simulation
+    """
+    bashCommand = './integration.py {} {}'.format(N, Tmax)
+    process = sb.Popen(bashCommand.split(), stdout = sb.PIPE)
+    output, error = process.communicate()
+    if error == None:
+        return "Simulation effectuée"
+    else:
+        return "Erreur dans l'execution, \nLog d'erreur : " + str(error)
+
 @serveur.route('/retourDonnees/<result>')
 
 def retour_donnees(result):
