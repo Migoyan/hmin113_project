@@ -2,7 +2,7 @@ import tkinter as tk
 import tkinter.simpledialog as tks
 import tkinter.messagebox as message
 from matplotlib import pyplot as plt
-
+import sys
 
 hauteur=700
 largeur=900
@@ -15,7 +15,8 @@ def createObjet():
 		y=tks.askfloat("Input","y",parent=root )
 		vx=tks.askfloat("Input","vx",parent=root )
 		vy=tks.askfloat("Input","Vy",parent=root )
-		ob+=[[x,y,vx,vy]]
+		m=tks.askfloat("Input","m",parent=root )
+		ob+=[[x,y,vx,vy,m]]
 
 	ask=message.askyesno("Question","voulez vous ajouter plus d'objet ?")
 	if ask:
@@ -25,19 +26,27 @@ def createObjet():
 			y=tks.askfloat("Input","y",parent=root )
 			vx=tks.askfloat("Input","vx",parent=root )
 			vy=tks.askfloat("Input","Vy",parent=root )
-			ob+=[[x,y,vx,vy]]
-	ask=message.askyesno("Question","voulez vous lancer la simulation ?")
+			m=tks.askfloat("Input","m",parent=root)
+			ob+=[[x,y,vx,vy,m]]
+
+	ask=message.askyesno("Question","voulez vous suprimer les objets d'objet ?")
 	if ask:
-		print(ob)
+		ob=[]
 	else :
-		ask=message.askyesno("Question","voulez vous suprimer les objets d'objet ?")
-		if ask:
-			ob=[]
-	print(ob)
+		fich=open("CI.dat","r")
+		for o in ob:
+			for char in o:
+				fich.write(str(char)+", ")
+			fich.write("\n")
+		fich.close()  	
+	#print(ob)
+
+def lanceSimul():
+	return 0
+
 
 
 def checkFile():
-	#evoi une commande pour recuperes les fichie existent
 	listFichier="" #liste des fichier contenant les differente condition initial
 	print(listeFichier)
 	ask=message.askyesno("Question","voulez vous afficher l'une des simulation ?")
@@ -64,10 +73,10 @@ bouton.pack()
 
 root=tk.Tk()
 mainWindow=tk.Canvas(root,bg='White',height=hauteur,width=largeur)
-mainWindow.pack(side=LEFT,padx=5,pady=5)
+mainWindow.pack(side="left",padx=5,pady=5)
 addresServ=tks.askstring("Input","Quelle est l'adresse du serveur ?",parent=mainWindow)
 objet=tk.Button(root,text="Crée des objets",command=createObjet)
 objet.pack()
-check=tj.Button(root,text="Check fichier serveur",checkFile)
+check=tk.Button(root,text="Check fichier serveur",command=checkFile)
 check.pack()
 root.mainloop()
