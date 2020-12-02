@@ -1,11 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import tkinter as tk
 import tkinter.simpledialog as tks
 import tkinter.messagebox as message
 from matplotlib import pyplot as plt
 import sys
+import subprocess as sb
 
 hauteur=700
 largeur=900
+fich_select=""
 
 def createObjet():
     n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
@@ -33,32 +38,50 @@ def createObjet():
     if ask:
         ob=[]
     else :
-        fich=open("CI.dat","r")
+        nbfichier=1
+        nomfich="initial_data/"+"CI"+str(nbfichier)+".dat"
+        fich=open(nomfich,"w")
         for o in ob:
             for char in o:
                 fich.write(str(char)+", ")
             fich.write("\n")
         fich.close()    
+    fich_select=nomfich
     #print(ob)
 
 def lanceSimul():
-    return 0
-
-
+    ask=message.askyesno("Question","voulez vous lancer la simulation?")
+    if ask:
+        """curlcommande="curl -X POST -F filename="+nomfich+" "+adrresServ+/uploadCIFile"
+        process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+        output,error = process.communicate()"""
+        """curlcommande=adrresServ+"/retourDonnees/<result>"
+        process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+        output,error = process.communicate()"""
+    ask=message.askyesno("Question","voulez vous ploter les donné?")
+    if ask:
+        plotSimu()
 
 def checkFile():
-    listFichier="" #liste des fichier contenant les differente condition initial
-    print(listeFichier)
-    ask=message.askyesno("Question","voulez vous afficher l'une des simulation ?")
-    if ask:
-        fichier=tks.askstring("Quel simulation voulez vous afficher ?")
-        file=open(ficher,"r")
-        data=file.readlines()
-        for dat in data:
-            plt.plot(dat[0],dat[1])
-        plt.show()
+    """lscommande="ls initial_data"
+    process = sb.Popen(lscommande.split(), stdout = sb.PIPE)
+    output,error = process.communicate()"""
+    output=[]
+    for fich in output:
+        data=open("initial_data/"+fich,"r")
+        print(fish,data)
 
-    
+
+def plotSimu():
+    """lscommande="ls plotdata/"+str(numsimiu)
+    process = sb.Popen(lscommande.split(), stdout = sb.PIPE)
+    output,error = process.communicate()"""
+    for fich in output:
+        data=open("plotdata/"+str(numsimiu)+fich,"r")
+        coord=data.readlines()
+        plt.plot(coord[1],coord[2])
+    plt.show()
+
 
 
 """i=tks.askfloat("Input","Vitesse",parent=root )
@@ -69,14 +92,33 @@ print(i,j)"""
 bouton=Button()
 bouton.pack()
 """
+"""try:
+    lscommande="ls initial_data"
+    process = sb.Popen(lscommande.split(), stdout = sb.PIPE)
+    output,error = process.communicate()
 
+    print(output)
+except:
+    mkdircommande="mkdir initial_data"
+    process=sb.Popen(mkdircommande.split(), stdout = sb.PIPE)
+    output,error=process.communicate()"""
 
 root=tk.Tk()
 mainWindow=tk.Canvas(root,bg='White',height=hauteur,width=largeur)
 mainWindow.pack(side="left",padx=5,pady=5)
+
 addresServ=tks.askstring("Input","Quelle est l'adresse du serveur ?",parent=mainWindow)
+
 objet=tk.Button(root,text="Crée des objets",command=createObjet)
 objet.pack()
-check=tk.Button(root,text="Check fichier serveur",command=checkFile)
+
+check=tk.Button(root,text="Check fichier ",command=checkFile)
 check.pack()
+
+upload=tk.Button(root,text="lancer la simulation ",command=lanceSimul)
+upload.pack()
+
+plote=tk.Button(root,text="plot",command=plotSimu)
+plote.pack()
+
 root.mainloop()
