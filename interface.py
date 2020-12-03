@@ -52,7 +52,7 @@ def createObjet():
 def lanceSimul():
     ask=message.askyesno("Question","voulez vous lancer la simulation?")
     if ask:
-        """curlcommande="curl -X POST -F filename="+nomfich+" "+adrresServ+/uploadCIFile"
+        """curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+/uploadCIFile"
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()"""
         """curlcommande=adrresServ+"/retourDonnees/<result>"
@@ -70,7 +70,12 @@ def checkFile():
     for fich in output:
         data=open("initial_data/"+fich,"r")
         print(fish,data)
-
+    ask=message.askyesno("Question","Voulez vous selectionner un fichier ?")
+    if ask:
+        fich_select=tks.askstring("Input","Entrer le nom du fichier")
+        ask=message.askyesno("Question","Voulez vous lancer la simulation ?")
+        if ask :
+            lanceSimul()
 
 def plotSimu():
     """lscommande="ls plotdata/"+str(numsimiu)
