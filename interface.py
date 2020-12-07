@@ -13,6 +13,7 @@ largeur=900
 fich_select=""
 
 def createObjet():
+    global fich_select
     n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
     ob=[]
     for i in range(n):
@@ -50,12 +51,13 @@ def createObjet():
     #print(ob)
 
 def lanceSimul():
+    global fich_select
     ask=message.askyesno("Question","voulez vous lancer la simulation?")
     if ask:
         """curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+/uploadCIFile"
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()"""
-        """curlcommande=adrresServ+"/retourDonnees/<result>"
+        """curlcommande=adrresServ+"/retourDonnees/<result>  "
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()"""
     ask=message.askyesno("Question","voulez vous ploter les donné?")
@@ -87,6 +89,25 @@ def plotSimu():
         plt.plot(coord[1],coord[2])
     plt.show()
 
+
+def random_simu():
+        n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
+        x=tks.askfloat("Input","X_min",parent=root )
+        x_max=tks.askfloat("Input","X_max",parent=root )
+        y=tks.askfloat("Input","Y_min",parent=root )
+        y_max=tks.askfloat("Input","Y_max",parent=root )
+        v=tks.askfloat("Input","v_min",parent=root )
+        v_max=tks.askfloat("Input","v_max",parent=root )
+        M_min=tks.askfloat("Input","M_min",parent=root )
+        M_max=tks.askfloat("Input","M_max",parent=root )
+        ask=message.askyesno("Question","Voulez vous lancer la simulation ?")
+        if ask:
+            curlcommande=addresServ+"/paramInit/"+string(n)+string(x)+string(x_max)+string(y)+string(y_max)+string(v)+string(v_max)+string(M_min)+string(M_max)
+            process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+            output,error = process.communicate()
+             """curlcommande=adrresServ+"/retourDonnees/<result>  "
+            process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+            output,error = process.communicate()"""
 
 
 """i=tks.askfloat("Input","Vitesse",parent=root )
@@ -122,6 +143,9 @@ check.pack()
 
 upload=tk.Button(root,text="lancer la simulation ",command=lanceSimul)
 upload.pack()
+
+random_simu=tk.Button(root,text="random simulation ",command=random_simu)
+random_simu.pack()
 
 plote=tk.Button(root,text="plot",command=plotSimu)
 plote.pack()
