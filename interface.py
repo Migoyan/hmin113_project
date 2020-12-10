@@ -57,9 +57,11 @@ def lanceSimul():
         """curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+/uploadCIFile"
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()"""
-        """curlcommande=adrresServ+"/retourDonnees/<result>  "
-        process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-        output,error = process.communicate()"""
+        for i in range(n):
+            corp="corp_"+str(1+i)
+            """curlcommande=adrresServ+"/retourDonnees/"+corp+" > plotdata/"+numsimu+corp
+            process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+            output,error = process.communicate()"""
     ask=message.askyesno("Question","voulez vous ploter les donné?")
     if ask:
         plotSimu()
@@ -105,9 +107,11 @@ def random_simu():
             curlcommande=addresServ+"/paramInit/"+string(n)+string(x)+string(x_max)+string(y)+string(y_max)+string(v)+string(v_max)+string(M_min)+string(M_max)
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
-             """curlcommande=adrresServ+"/retourDonnees/<result>  "
-            process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-            output,error = process.communicate()"""
+            for  i in range(n):
+                corp="corp_"+str(1+i)
+                 """curlcommande=adrresServ+"/retourDonnees/"+corp" "
+                process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+                output,error = process.communicate()"""
 
 
 """i=tks.askfloat("Input","Vitesse",parent=root )
