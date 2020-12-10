@@ -59,7 +59,7 @@ def lanceSimul():
         output,error = process.communicate()"""
         for i in range(n):
             corp="corp_"+str(1+i)
-            """curlcommande=adrresServ+"/retourDonnees/"+corp+" > plotdata/"+numsimu+corp
+            """curlcommande=adrresServ+"/retourDonnees/"+corp+" > plotdata/"+numsimu+"/"+corp
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()"""
     ask=message.askyesno("Question","voulez vous ploter les donné?")
@@ -109,7 +109,7 @@ def random_simu():
             output,error = process.communicate()
             for  i in range(n):
                 corp="corp_"+str(1+i)
-                 """curlcommande=adrresServ+"/retourDonnees/"+corp" "
+                 """curlcommande=adrresServ+"/retourDonnees/"+corp+" > plotdata/"+numsimu+"/"+corp
                 process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
                 output,error = process.communicate()"""
 
