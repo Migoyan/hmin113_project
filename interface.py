@@ -7,6 +7,7 @@ import tkinter.messagebox as message
 from matplotlib import pyplot as plt
 import sys
 import subprocess as sb
+import time 
 
 hauteur=20
 largeur=20
@@ -67,6 +68,7 @@ def lanceSimul():
         """curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+/uploadCIFile"
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()"""
+        time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
         for i in range(n):
             corp="corp_"+str(1+i)
             """curlcommande=adrresServ+"/retourDonnees/"+corp > plotdata/"+numsimu+"/"+corp
