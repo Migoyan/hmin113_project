@@ -4,7 +4,8 @@
 import tkinter as tk
 import tkinter.simpledialog as tks
 import tkinter.messagebox as message
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
+import numpy as np
 import sys
 import subprocess as sb
 import time 
@@ -88,14 +89,28 @@ def checkFile(numsimu):
         if ask :
             lanceSimul()
 
-def plotSimu():
-    global numsimu
-    corp=os.listdir("plotdata/"+str(numsimu))
-    for fich in corp:
-        data=open("plotdata/"+str(numsimu)+"/"+fich,"r")
+<<<<<<< HEAD
+=======
+def plotSimu(num_simu=0):
+    if num_simu == 0 :
+        tks.askinteger("Input","Quelle simulation voulez-vous afficher ?",parent=root)
+    corps=os.listdir("plotdata/"+str(num_simu))
+    for fich in corps:
         coord=data.readlines()
-        plt.plot(coord[1],coord[2])
+        corp = []
+        try :
+            data=open("plotdata/"+str(num_simu)+fich,"r")
+        except FileNotFoundError :
+            print("Fichier inexistant")
+        for line in data:
+            tempLine = line.rstrip('\n')
+            splittedLine = tempLine.split(", ")
+            corp += [[float(i) for i in splittedLine]]
+            corp_array = np.array(corp)
         data.close()
+        plt.plot(corp_array[:, 1], corp_array[:, 2])
+    return corps
+>>>>>>> 199cc11c64be9365d0173c17a88c7eba4a63ec7e
     plt.show()
 
 
