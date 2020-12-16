@@ -53,28 +53,28 @@ def createObjet():
             fich.write("\n")
         fich.close()    
     fich_select=nomfich
+    ask=message.askyesno("Question","voulez vous lancer la simulation?"+fich_select)
+    if ask:
+        lanceSimul(fich_select)
     #print(ob)
 
-def lanceSimul():
-    global fich_select
-    ask=message.askyesno("Question","voulez vous lancer la simulation?"+fich_select)
+def lanceSimul(fich_select):
     fich=open(fich_select,"r")
     dat=fich.readlines()
     num_simu=float(fich_select[-5])
     n=len(dat)
-    if ask:
-        curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+"/uploadCIFile"
+    curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+"/uploadCIFile"
+    process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
+    output,error = process.communicate()
+    time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
+    for i in range(n):
+        corp="corp_"+str(1+i)
+        curlcommande="curl "+adrresServ+"/retourDonnees/"+corp+"--output plotdata/"+str(num_simu)+"/"+corp
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()
-        time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
-        for i in range(n):
-            corp="corp_"+str(1+i)
-            curlcommande="curl "+adrresServ+"/retourDonnees/"+corp+"-- output plotdata/"+str(num_simu)+"/"+corp
-            process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-            output,error = process.communicate()
-        ask=message.askyesno("Question","voulez vous ploter les donné?")
-        if ask:
-            plotSimu(num_simu)
+    ask=message.askyesno("Question","voulez vous ploter les donné?")
+    if ask:
+        plotSimu(num_simu)
 
 def checkFile(numsimu):
     global fich_select
@@ -87,9 +87,8 @@ def checkFile(numsimu):
         fich_select=tks.askstring("Input","Entrer le nom du fichier")
         fich_select="initial_data/"+fich_select
         ask=message.askyesno("Question","Voulez vous lancer la simulation ?")
-        num_simu=float(fich_select[-5])
         if ask :
-            lanceSimul(num_simu)
+            lanceSimul(fich_select)
 
 
 def plotSimu(num_simu=0):
@@ -139,10 +138,12 @@ def random_simu():
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
             numsimu+=1
-            curlcommande="curl "+addresServ+"/retourDonnees/CI.dat -- output initial_data/CI"+str(numsimu)+".dat"
+            curlcommande="curl "+addresServ+"/retourDonnees/CI.dat --output initial_data/CI"+str(numsimu)+".dat"
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
-
+            ask=message.askyesno("Question","voulez vous lancer la simulation?"+"initial_data/CI"+str(numsimu)+".dat")
+            if ask:
+                lanceSimul("initial_data/CI"+str(numsimu)+".dat")
 
 """i=tks.askfloat("Input","Vitesse",parent=root )
 j=tks.askfloat("Input","Vitesse",parent=root )  
@@ -166,8 +167,6 @@ objet.pack()
 check=tk.Button(root,text="Check fichier ",command=lambda :checkFile(numsimu))
 check.pack()
 
-upload=tk.Button(root,text="lancer la simulation ",command=lanceSimul)
-upload.pack()
 
 random_simu=tk.Button(root,text="random simulation ",command=random_simu)
 random_simu.pack()
