@@ -69,7 +69,7 @@ def lanceSimul():
         time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
         for i in range(n):
             corp="corp_"+str(1+i)
-            curlcommande="curl "+adrresServ+"/retourDonnees/"+corp+"> plotdata/"+str(num_simu)+"/"+corp
+            curlcommande="curl "+adrresServ+"/retourDonnees/"+corp+"-- output plotdata/"+str(num_simu)+"/"+corp
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
         ask=message.askyesno("Question","voulez vous ploter les donné?")
@@ -139,7 +139,7 @@ def random_simu():
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
             numsimu+=1
-            curlcommande="curl "+addresServ+"/retourDonnees/CI.dat > initial_data/CI"+str(numsimu)+".dat"
+            curlcommande="curl "+addresServ+"/retourDonnees/CI.dat -- output initial_data/CI"+str(numsimu)+".dat"
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
 
