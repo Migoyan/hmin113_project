@@ -60,6 +60,7 @@ def lanceSimul():
     ask=message.askyesno("Question","voulez vous lancer la simulation?"+fich_select)
     fich=open(fich_select,"r")
     dat=fich.readlines()
+    num_simu=float(fich_select[-4])
     n=len(dat)
     if ask:
         """curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+/uploadCIFile"
@@ -68,12 +69,12 @@ def lanceSimul():
         time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
         for i in range(n):
             corp="corp_"+str(1+i)
-            """curlcommande=adrresServ+"/retourDonnees/"+corp > plotdata/"+str(numsimu)+"/"+corp
+            """curlcommande=adrresServ+"/retourDonnees/"+corp > plotdata/"+str(num_simu)+"/"+corp
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()"""
         ask=message.askyesno("Question","voulez vous ploter les donné?")
         if ask:
-            plotSimu()
+            plotSimu(num_simu)
 
 def checkFile(numsimu):
     global fich_select
@@ -86,20 +87,20 @@ def checkFile(numsimu):
         fich_select=tks.askstring("Input","Entrer le nom du fichier")
         fich_select="initial_data/"+fich_select
         ask=message.askyesno("Question","Voulez vous lancer la simulation ?")
+        num_simu=float(fich_select[-4])
         if ask :
-            lanceSimul()
+            lanceSimul(num_simu)
 
-<<<<<<< HEAD
-=======
+
 def plotSimu(num_simu=0):
     if num_simu == 0 :
-        tks.askinteger("Input","Quelle simulation voulez-vous afficher ?",parent=root)
+        num_simu=tks.askinteger("Input","Quelle simulation voulez-vous afficher ?",parent=root)
     corps=os.listdir("plotdata/"+str(num_simu))
     for fich in corps:
         coord=data.readlines()
         corp = []
         try :
-            data=open("plotdata/"+str(num_simu)+fich,"r")
+            data=open("plotdata/"+str(num_simu)+"/"+fich,"r")
         except FileNotFoundError :
             print("Fichier inexistant")
         for line in data:
@@ -109,8 +110,6 @@ def plotSimu(num_simu=0):
             corp_array = np.array(corp)
         data.close()
         plt.plot(corp_array[:, 1], corp_array[:, 2])
-    return corps
->>>>>>> 199cc11c64be9365d0173c17a88c7eba4a63ec7e
     plt.show()
 
 
