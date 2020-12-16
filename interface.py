@@ -76,9 +76,10 @@ def lanceSimul():
 
 def checkFile(numsimu):
     global fich_select
-    for i in range(1,numsimu):
-        data=open("initial_data/"+"Ci"+str(i)+".dat","r")
-        print("Ci"+str(i)+".dat",data.readlines())
+    init_data=os.listdir("initial_data")
+    for i in init_data:
+        data=open("initial_data/"+i,"r")
+        print(i,data.readlines())
     ask=message.askyesno("Question","Voulez vous selectionner un fichier ?")
     if ask:
         fich_select=tks.askstring("Input","Entrer le nom du fichier")
