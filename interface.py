@@ -92,9 +92,10 @@ def plotSimu():
     global numsimu
     corp=os.listdir("plotdata/"+str(numsimu))
     for fich in corp:
-        data=open("plotdata/"+str(numsimiu)+fich,"r")
+        data=open("plotdata/"+str(numsimu)+"/"+fich,"r")
         coord=data.readlines()
         plt.plot(coord[1],coord[2])
+        data.close()
     plt.show()
 
 
