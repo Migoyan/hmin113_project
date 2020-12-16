@@ -60,18 +60,18 @@ def lanceSimul():
     ask=message.askyesno("Question","voulez vous lancer la simulation?"+fich_select)
     fich=open(fich_select,"r")
     dat=fich.readlines()
-    num_simu=float(fich_select[-4])
+    num_simu=float(fich_select[-5])
     n=len(dat)
     if ask:
-        """curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+/uploadCIFile"
+        curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+"/uploadCIFile"
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-        output,error = process.communicate()"""
+        output,error = process.communicate()
         time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
         for i in range(n):
             corp="corp_"+str(1+i)
-            """curlcommande="curl "+adrresServ+"/retourDonnees/"+corp > plotdata/"+str(num_simu)+"/"+corp
+            curlcommande="curl "+adrresServ+"/retourDonnees/"+corp+"> plotdata/"+str(num_simu)+"/"+corp
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-            output,error = process.communicate()"""
+            output,error = process.communicate()
         ask=message.askyesno("Question","voulez vous ploter les donné?")
         if ask:
             plotSimu(num_simu)
@@ -87,7 +87,7 @@ def checkFile(numsimu):
         fich_select=tks.askstring("Input","Entrer le nom du fichier")
         fich_select="initial_data/"+fich_select
         ask=message.askyesno("Question","Voulez vous lancer la simulation ?")
-        num_simu=float(fich_select[-4])
+        num_simu=float(fich_select[-5])
         if ask :
             lanceSimul(num_simu)
 
@@ -126,13 +126,22 @@ def random_simu():
         M_max=tks.askfloat("Input","M_max",parent=root )
         ask=message.askyesno("Question","Voulez vous lancer la simulation ?")
         if ask:
-            """curlcommande="curl "+addresServ+"/paramInit/"+string(n)+string(x)+string(x_max)+string(y)+string(y_max)+string(v)+string(v_max)+string(M_min)+string(M_max)
+            curlcommande=("curl "+addresServ+"/paramInit/"+
+                          str(n)+"/"+
+                          str(x)+"/"+
+                          str(x_max)+"/"+
+                          str(y)+"/"+
+                          str(y_max)+"/"+
+                          str(v)+"/"+
+                          str(v_max)+"/"+
+                          str(M_min)+"/"+
+                          str(M_max))
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()
             numsimu+=1
-            curlcommande="curl "+adrresServ+"/retourDonnees/CI.dat" > "initial_data/"+"CI"initial_data/"+"CI"+str(numsimu)+".dat"
+            curlcommande="curl "+addresServ+"/retourDonnees/CI.dat > initial_data/CI"+str(numsimu)+".dat"
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-            output,error = process.communicate()"""
+            output,error = process.communicate()
 
 
 """i=tks.askfloat("Input","Vitesse",parent=root )
