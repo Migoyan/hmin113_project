@@ -8,18 +8,15 @@ from matplotlib import pyplot as plt
 import sys
 import subprocess as sb
 import time 
+import os
+
 
 hauteur=20
 largeur=20
 fich_select=""
-try:
-   num_fich=open('numsimu.dat',"w")
-   numsimu=int(num_fich.readline())
-except:
-    numsimu=0
-    num_fich=open('numsimu.dat',"w")
+numsimu=len(os.listdir("initial_data"))
 
-def createObjet(num_fich):
+def createObjet():
     global fich_select,numsimu
     n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
     ob=[]
@@ -47,7 +44,6 @@ def createObjet(num_fich):
         ob=[]
     else :
         numsimu+=1
-        num_fich.write(str(numsimu))
         nomfich="initial_data/"+"CI"+str(numsimu)+".dat"
         fich=open(nomfich,"w")
         for o in ob:
@@ -71,7 +67,7 @@ def lanceSimul():
         time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
         for i in range(n):
             corp="corp_"+str(1+i)
-            """curlcommande=adrresServ+"/retourDonnees/"+corp > plotdata/"+numsimu+"/"+corp
+            """curlcommande=adrresServ+"/retourDonnees/"+corp > plotdata/"+str(numsimu)+"/"+corp
             process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
             output,error = process.communicate()"""
         ask=message.askyesno("Question","voulez vous ploter les donné?")
@@ -80,9 +76,9 @@ def lanceSimul():
 
 def checkFile(numsimu):
     global fich_select
-    for i in range(numsimu):
-        data=open("initial_data/"+"Ci"+i+".dat","r")
-        print("Ci"+numsimu+".dat",data)
+    for i in range(1,numsimu):
+        data=open("initial_data/"+"Ci"+str(i)+".dat","r")
+        print("Ci"+str(i)+".dat",data.readlines())
     ask=message.askyesno("Question","Voulez vous selectionner un fichier ?")
     if ask:
         fich_select=tks.askstring("Input","Entrer le nom du fichier")
@@ -92,17 +88,16 @@ def checkFile(numsimu):
             lanceSimul()
 
 def plotSimu():
-    lscommande="ls plotdata/"+str(numsimiu)
-    process = sb.Popen(lscommande.split(), stdout = sb.PIPE)
-    output,error = process.communicate()
-    for fich in output:
+    global numsimu
+    corp=os.listdir("plotdata/"+str(numsimu))
+    for fich in corp:
         data=open("plotdata/"+str(numsimiu)+fich,"r")
         coord=data.readlines()
         plt.plot(coord[1],coord[2])
     plt.show()
 
 
-def random_simu(numsimu,num_fich):
+def random_simu(numsimu):
         n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
         x=tks.askfloat("Input","X_min",parent=root )
         x_max=tks.askfloat("Input","X_max",parent=root )
@@ -140,7 +135,7 @@ mainWindow.pack(side="left",padx=5,pady=5)
 
 addresServ=tks.askstring("Input","Quelle est l'adresse du serveur ?",parent=mainWindow)
 
-objet=tk.Button(root,text="Crée des objets",command=lambda :createObjet(numsimu,num_fich))
+objet=tk.Button(root,text="Crée des objets",command=createObjet)
 objet.pack()
 
 check=tk.Button(root,text="Check fichier ",command=lambda :checkFile(numsimu))
@@ -149,7 +144,7 @@ check.pack()
 upload=tk.Button(root,text="lancer la simulation ",command=lanceSimul)
 upload.pack()
 
-random_simu=tk.Button(root,text="random simulation ",command=lambda :random_simu(numsimu,num_fich))
+random_simu=tk.Button(root,text="random simulation ",command=lambda :random_simu(numsimu))
 random_simu.pack()
 
 plote=tk.Button(root,text="plot",command=plotSimu)
