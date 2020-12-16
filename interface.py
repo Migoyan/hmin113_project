@@ -98,7 +98,8 @@ def plotSimu():
     plt.show()
 
 
-def random_simu(numsimu):
+def random_simu():
+        global numsimu
         n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
         x=tks.askfloat("Input","X_min",parent=root )
         x_max=tks.askfloat("Input","X_max",parent=root )
@@ -145,7 +146,7 @@ check.pack()
 upload=tk.Button(root,text="lancer la simulation ",command=lanceSimul)
 upload.pack()
 
-random_simu=tk.Button(root,text="random simulation ",command=lambda :random_simu(numsimu))
+random_simu=tk.Button(root,text="random simulation ",command=random_simu)
 random_simu.pack()
 
 plote=tk.Button(root,text="plot",command=plotSimu)
