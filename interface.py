@@ -63,13 +63,17 @@ def lanceSimul(fich_select):
     dat=fich.readlines()
     num_simu=float(fich_select[-5])
     n=len(dat)
-    curlcommande="curl -X POST -F filename="+fich_select+" "+adrresServ+"/uploadCIFile"
+    curlcommande="curl -X POST -F filename="+fich_select+" "+addresServ+"/uploadCIFile"
     process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
     output,error = process.communicate()
+    Nmax=tks.askinteger("Input","Combien de oint vouler vous ?",parent=root)
+    Tmax=tks.askfloat("Input","Sur quel interval de temps ?",parent=root )
+    curlcommande="curl "+addresServ+"/simulation/"+str(Nmax)+"/"+str(Tmax)
+
     time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
     for i in range(n):
         corp="corp_"+str(1+i)
-        curlcommande="curl "+adrresServ+"/retourDonnees/"+corp+"--output plotdata/"+str(num_simu)+"/"+corp
+        curlcommande="curl "+addresServ+"/retourDonnees/"+corp+"--output plotdata/"+str(num_simu)+"/"+corp
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()
     ask=message.askyesno("Question","voulez vous ploter les donné?")
@@ -175,4 +179,4 @@ plote=tk.Button(root,text="plot",command=plotSimu)
 plote.pack()
 
 root.mainloop()
-num_fich.close()
+
