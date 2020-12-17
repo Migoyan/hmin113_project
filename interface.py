@@ -84,7 +84,7 @@ def lanceSimul(fich_select):
     #recuperation des fichier
     for i in range(n):
         corp="corp_"+str(1+i)
-        curlcommande="curl "+addresServ+"/retourDonnees/"+corp+"--output plotdata/"+str(num_simu)+"/"+corp
+        curlcommande="curl "+addresServ+"/retourDonnees/"+corp+" --output plotdata/"+str(num_simu)+"/"+corp
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()
     ask=message.askyesno("Question","voulez vous ploter les donné?")
