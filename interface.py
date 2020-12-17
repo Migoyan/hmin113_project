@@ -15,7 +15,7 @@ import os
 hauteur=20
 largeur=20
 fich_select=""
-numsimu=len(os.listdir("initial_data"))
+numsimu=len(os.listdir("initial_data")) #recupere le nombre de CI.dat existant
 
 
 
@@ -87,6 +87,7 @@ def lanceSimul(fich_select):
         curlcommande="curl "+addresServ+"/retourDonnees/"+corp+" --output plotdata/"+str(num_simu)+"/"+corp
         process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
         output,error = process.communicate()
+
     ask=message.askyesno("Question","voulez vous ploter les donné?")
     if ask:
         plotSimu(num_simu)
@@ -98,7 +99,7 @@ def checkFile(numsimu):
     init_data=os.listdir("initial_data")
     for i in init_data:
         data=open("initial_data/"+i,"r")
-        print(i,data.readlines())
+        print(i,data.readlines()) #print lesdonnées de chaque CI.dat dans le terminal
     ask=message.askyesno("Question","Voulez vous selectionner un fichier ?")
     if ask:
         fich_select=tks.askstring("Input","Entrer le nom du fichier")
@@ -108,6 +109,7 @@ def checkFile(numsimu):
             lanceSimul(fich_select)
 
 
+#fonction pour ploter une simulation 
 def plotSimu(num_simu=0):
     if num_simu == 0 :
         num_simu=tks.askinteger("Input","Quelle simulation voulez-vous afficher ?",parent=root)
@@ -119,6 +121,7 @@ def plotSimu(num_simu=0):
             data=open("plotdata/"+str(num_simu)+"/"+fich,"r")
         except FileNotFoundError :
             print("Fichier inexistant")
+        # boucle pour recuperer les doonees et les mettre au bon format
         for line in data:
             tempLine = line.rstrip('\n')
             splittedLine = tempLine.split(", ")
@@ -129,6 +132,8 @@ def plotSimu(num_simu=0):
     plt.show()
 
 
+
+#fonction pour demander aus serveur de génerer un fichier de condition sinitial aléatoire 
 def random_simu():
         global numsimu
         n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
