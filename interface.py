@@ -43,7 +43,7 @@ def createObjet():
             m=tks.askfloat("Input","m",parent=root)
             ob+=[[x,y,vx,vy,m]]
 
-    ask=message.askyesno("Question","voulez vous suprimer les objets d'objet ?")
+    ask=message.askyesno("Question","voulez vous supprimer les objets d'objet ?")
     if ask:
         ob=[]
     else :
@@ -74,12 +74,12 @@ def lanceSimul(fich_select):
     process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
     output,error = process.communicate()
 
-    #lancement de la simulation par les serveur
-    Nmax=tks.askinteger("Input","Combien de oint vouler vous ?",parent=root)
+    #lancement de la simulation par le serveur
+    Nmax=tks.askinteger("Input","Combien de point voulez vous ?",parent=root)
     Tmax=tks.askfloat("Input","Sur quel interval de temps ?",parent=root )
     curlcommande="curl "+addresServ+"/simulation/"+str(Nmax)+"/"+str(Tmax)
     process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
-    time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
+    time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calculs
 
     #recuperation des fichier
     for i in range(n):
