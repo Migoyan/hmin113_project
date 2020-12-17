@@ -17,6 +17,9 @@ largeur=20
 fich_select=""
 numsimu=len(os.listdir("initial_data"))
 
+
+
+#creation d'un fichier de conditon initial pour l'envoier aux serveur
 def createObjet():
     global fich_select,numsimu
     n=tks.askinteger("Input","Combien d'objet voulez vous ?",parent=root)
@@ -58,19 +61,27 @@ def createObjet():
         lanceSimul(fich_select)
     #print(ob)
 
+#Lancer la simulation et récupere les données
+
 def lanceSimul(fich_select):
     fich=open(fich_select,"r")
     dat=fich.readlines()
     num_simu=float(fich_select[-5])
     n=len(dat)
+
+    #upload du fichier selectionner
     curlcommande="curl -X POST -F filename="+fich_select+" "+addresServ+"/uploadCIFile"
     process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
     output,error = process.communicate()
+
+    #lancement de la simulation par les serveur
     Nmax=tks.askinteger("Input","Combien de oint vouler vous ?",parent=root)
     Tmax=tks.askfloat("Input","Sur quel interval de temps ?",parent=root )
     curlcommande="curl "+addresServ+"/simulation/"+str(Nmax)+"/"+str(Tmax)
-
+    process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
     time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calcules
+
+    #recuperation des fichier
     for i in range(n):
         corp="corp_"+str(1+i)
         curlcommande="curl "+addresServ+"/retourDonnees/"+corp+"--output plotdata/"+str(num_simu)+"/"+corp
@@ -80,6 +91,8 @@ def lanceSimul(fich_select):
     if ask:
         plotSimu(num_simu)
 
+
+#fonction pour voir les fichier de condition initial precent dans les fichier locaux
 def checkFile(numsimu):
     global fich_select
     init_data=os.listdir("initial_data")
