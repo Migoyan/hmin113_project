@@ -36,15 +36,17 @@ for i in range(N_objet):
     direction = r.uniform(0, 2*m.pi)
     direction_x = m.cos(direction)
     direction_y = m.sin(direction)
-    corps += [[[r.uniform(x_min, x_max)],
-               [r.uniform(y_min, y_max)],
-               [r.uniform(v_min * direction_x, v_max * direction_x)],
-               [r.uniform(v_min * direction_y, v_max * direction_y)],
+    corps += [[r.uniform(x_min, x_max),
+               r.uniform(y_min, y_max),
+               r.uniform(v_min * direction_x, v_max * direction_x),
+               r.uniform(v_min * direction_y, v_max * direction_y),
                r.uniform(m_min, m_max)]]
 
 # Ecriture des données dans un fichier
 
 fichier = open('CI.dat', 'w')
 for i in corps:
-    fichier.write(str(i)+"\n")
+    for o in i:
+        fichier.write(str(o)+", ")
+    fichier.write("\n")
 fichier.close()
