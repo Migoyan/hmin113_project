@@ -81,6 +81,10 @@ def lanceSimul(fich_select):
     process = sb.Popen(curlcommande.split(), stdout = sb.PIPE)
     time.sleep(3) #temps de pausse pour laisser le temps au serve de faire les calculs
 
+    #creation du fichier de sauvegarde
+    path="plotdata/"+str(num_simu)
+    os.mkdir(path)
+
     #recuperation des fichier
     for i in range(n):
         corp="corp_"+str(1+i)
