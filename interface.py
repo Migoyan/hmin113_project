@@ -94,7 +94,7 @@ def lanceSimul(fich_select):
 
     ask=message.askyesno("Question","voulez vous ploter les donné?")
     if ask:
-        plotSimu(num_simu)
+        plotSimu(float(num_simu))
 
 
 #fonction pour voir les fichier de condition initial precent dans les fichier locaux
@@ -116,10 +116,9 @@ def checkFile(numsimu):
 #fonction pour ploter une simulation 
 def plotSimu(num_simu=0):
     if num_simu == 0 :
-        num_simu=tks.askinteger("Input","Quelle simulation voulez-vous afficher ?",parent=root)
+        num_simu=tks.askfloat("Input","Quelle simulation voulez-vous afficher ?",parent=root)
     corps=os.listdir("plotdata/"+str(num_simu))
     for fich in corps:
-        coord=data.readlines()
         corp = []
         try :
             data=open("plotdata/"+str(num_simu)+"/"+fich,"r")
